@@ -7,6 +7,7 @@ const router = express.Router();
 const User = require("../models").course;
 const { Course } = require("../models/index.js");
 
+
 //asyncHandler - wraps route handlers
 function asyncHandler(cb) {
   return async (req, res, next) => {
@@ -80,7 +81,7 @@ router.get(
 
 //     res.status(204).end();
 //     } else {
-//       next();
+//        res.status(404).json({message: "Quote Not Found"});
 //     }
 //   })
 // );

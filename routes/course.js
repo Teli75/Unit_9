@@ -33,6 +33,7 @@ router.post(
   asyncHandler(async (req, res) => {
     try {
       console.log("entered courses post route");
+      //if (req.body.title && req.body.description){ await Course.create(req.body); }
       await Course.create(req.body);
       res.status(201).json({ message: "Course successfully created!" });
     } catch (error) {
@@ -73,8 +74,7 @@ router.get(
 //     if (course) {
 //       course.title = req.body.title;
 //       course.description = req.body.description;
-//       course.estimatedTime = req.body.estimatedTime;
-//       course.materialsNeeded = req.body.materialsNeeded;
+
 
 //     await course.update(req.body);
 

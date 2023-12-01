@@ -23,9 +23,6 @@ router.get(
     });
   })
 );
-//     console.log("Entered user get route")
-//     let users = await User.findAll();
-//     res.json(users);
 
 // Route that creates a new user.
 router.post(
@@ -34,8 +31,7 @@ router.post(
     try {
       console.log("entered user post route");
       console.log(req.body);
-      // if ( req.body.firstName && req.body.lastName && req.body.emailAddress && req.body.password ){
-      //   console.log("Next step is to use create()")
+
       await User.create(req.body);
 
       res.status(201).json({ message: "Account successfully created!" });

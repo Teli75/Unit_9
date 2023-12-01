@@ -54,7 +54,9 @@ router.post(
 
 router.get(
   "/courses/:id",
+  authenticateUser,
   asyncHandler(async (req, res) => {
+    console.log("Entered delete route");
     //find course
     const course = await Course.findByPk(req.params.id);
     if (course) {

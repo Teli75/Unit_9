@@ -8,7 +8,6 @@ const { authenticateUser } = require("../middleware/auth-user");
 
 // Construct a router instance.
 const router = express.Router();
-const User = require("../models").course;
 const { Course } = require("../models/index.js");
 
 // Route that returns a list of courses.

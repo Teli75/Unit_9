@@ -8,6 +8,7 @@ const { authenticateUser } = require("../middleware/auth-user");
 
 // Construct a router instance.
 const router = express.Router();
+//Give us access to fsjstd-restapi.db
 const { User } = require("../models/index.js");
 
 // Route that returns a list of users.

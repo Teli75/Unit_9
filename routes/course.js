@@ -54,7 +54,6 @@ router.post(
 
 router.get(
   "/courses/:id",
-  authenticateUser,
   asyncHandler(async (req, res) => {
     console.log("Entered delete route");
     //find course
@@ -75,6 +74,7 @@ router.get(
 
 router.put(
   "/courses/:id",
+  authenticateUser,
   asyncHandler(async (req, res) => {
     let course;
     try {
@@ -103,7 +103,7 @@ router.put(
 /*
   /api/courses/:id DELETE route that will delete the corresponding course and return a 204 HTTP status code and no content.
   */
-  router.delete('/courses/:id', asyncHandler(async (req, res) => {
+  router.delete('/courses/:id', authenticateUser, asyncHandler(async (req, res) => {
     let course; 
     try {
         course = await Course.findByPk(req.params.id); 

@@ -18,8 +18,10 @@ router.get(
     const user = req.currentUser;
     console.log(user);
     res.json({
-      name: user.name,
-      username: user.emailAddress,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      emailAddress: user.emailAddress,
+      password: user.password,
     });
   })
 );

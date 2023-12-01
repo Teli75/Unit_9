@@ -46,40 +46,27 @@ module.exports = (sequelize) => {
         },
       },
       password: {
-        ////"virtual fields". These are attributes of a Model that only Sequelize populates but don't actually exist or get inserted as a column into the SQL database table.
-        type: DataTypes.VIRTUAL,
-        allowNull: false,
-        validate: {
-          notNull: {
-            msg: "A password is required",
-          },
-          notEmpty: {
-            msg: "Please provide a password",
-          },
-          len: {
-            args: [8, 20],
-            msg: "The password should be between 8 and 20 characters in length",
-          },
-        },
-      },
-
-      confirmedPassword: {
+        //"virtual fields". These are attributes of a Model that only Sequelize populates but don't actually exist or get inserted as a column into the SQL database table.
         type: DataTypes.STRING,
         allowNull: false,
-        //val represents the value being set for confirmedPassword.
         set(val) {
-          if (val === this.password) {
-            //bycrypt lib hashes pw
+          //val represents the value being set for confirmedPassword.
+          if (val) {
+            //pw is hashed using bcrypt
             const hashedPassword = bcrypt.hashSync(val, 10);
-            // //Set confirmedPassword val to hashed pw assigned to hashedPassword:
-            this.setDataValue("confirmedPassword", hashedPassword);
+            //Set the pw to the hashedpw
+            this.setDataValue('password', hashedPassword);
+            console.log('Hashed Password Length:', hashedPassword.length);
           }
         },
         validate: {
           notNull: {
-            msg: "Both passwords must match",
+            msg: 'A password is required'
           },
-        },
+          notEmpty: {
+            msg: 'Please provide a password'
+          },
+        }
       },
     },
     { sequelize }

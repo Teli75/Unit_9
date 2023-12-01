@@ -16,10 +16,10 @@ router.get(
   authenticateUser,
   asyncHandler(async (req, res) => {
     const user = req.currentUser;
-
+    console.log(user);
     res.json({
       name: user.name,
-      username: user.username,
+      username: user.emailAddress,
     });
   })
 );

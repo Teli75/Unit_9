@@ -19,14 +19,14 @@ exports.authenticateUser = async (req, res, next) => {
   const credentials = auth(req);
 
   if (credentials) {
-    //Check if the user's key (username or email address) is associated with a known user account in the db using a Sequelize finder method.
+    //Check if the user's email address) is associated with a known user account in the db using a Sequelize finder method.
     const user = await User.findOne({ where: { emailAddress: credentials.name } });
 
     if (user) {
       //compareSync() method to compare the user's password (from the Authorization header) to the encrypted password retrieved from the database
       const authenticated = bcrypt.compareSync(
         credentials.pass,
-        user.confirmedPassword
+        user.password
       );
       if (authenticated) {
         console.log(`Authentication successful for username: ${user.emailAddress}`);

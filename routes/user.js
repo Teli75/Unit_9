@@ -18,6 +18,8 @@ router.get(
   asyncHandler(async (req, res) => {
     const user = req.currentUser;
     console.log(user);
+
+    res.location('/');
     res.json({
       firstName: user.firstName,
       lastName: user.lastName,
@@ -43,8 +45,7 @@ router.post(
       console.log("ERROR: ", error.name);
 
       if (
-        error.name === "SequelizeValidationError" ||
-        error.name === "SequelizeUniqueConstraintError"
+        error.name === "SequelizeValidationError"
       ) {
         const errors = error.errors.map((err) => err.message);
         res.status(400).json({ errors });

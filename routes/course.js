@@ -10,14 +10,20 @@ const { authenticateUser } = require("../middleware/auth-user");
 const router = express.Router();
 
 //Give us access to fsjstd-restapi.db
-const { Course } = require("../models/index.js");
+const { Course, User } = require("../models/index.js");
 
 // Route that returns a list of courses.
 router.get(
   "/courses",
   asyncHandler(async (req, res) => {
     console.log(req.body);
-    let courses = await Course.findAll();
+    let courses = await Course.findAll({
+      include: [
+        {
+          model: User,
+        },
+      ],
+    });
 
     res.json(courses);
   })
@@ -31,9 +37,10 @@ router.post(
     try {
       console.log("entered courses post route");
       console.log(req.body);
-      if (req.body.title && req.body.description && req.body.userId) {
+      if (req.body.title && req.body.description) {
+        //if (req.body.title && req.body.description && req.body.userId) {
         await Course.create(req.body);
-
+        res.location(`/courses/${req.body.id}`);
         //await Course.create(req.body);
         res.status(201).json({ message: "Course successfully created!" });
       }
@@ -56,9 +63,16 @@ router.post(
 router.get(
   "/courses/:id",
   asyncHandler(async (req, res) => {
-    console.log("Entered delete route");
+    console.log("Entered detail get route");
     //find course
-    const course = await Course.findByPk(req.params.id);
+    const course = await Course.findByPk(req.params.id, {
+      include: [
+        {
+          model: User,
+        },
+      ],
+    });
+
     if (course) {
       res.json(course);
       res.status(200).json({ message: "Course Detail" });
@@ -77,7 +91,6 @@ router.put(
   "/courses/:id",
   authenticateUser,
   asyncHandler(async (req, res) => {
-    let course;
     try {
       //find course
       const course = await Course.findByPk(req.params.id);
@@ -104,24 +117,28 @@ router.put(
 /*
   /api/courses/:id DELETE route that will delete the corresponding course and return a 204 HTTP status code and no content.
   */
-  router.delete('/courses/:id', authenticateUser, asyncHandler(async (req, res) => {
-    let course; 
+router.delete(
+  "/courses/:id",
+  authenticateUser,
+  asyncHandler(async (req, res) => {
+    let course;
     try {
-        course = await Course.findByPk(req.params.id); 
-        if (course) {
-            await course.destroy();
-            res.status(204).end();
-        } else {
-            res.sendStatus(404); 
-        }
-    } catch(error) {
-        if (error.name === 'SequelizeValidationError') {
-            const errors = error.errors.map(err => err.message);
-            res.status(400).json({ errors });   
-        } else {
-            throw error;
-        }
+      course = await Course.findByPk(req.params.id);
+      if (course) {
+        await course.destroy();
+        res.status(204).end();
+      } else {
+        res.sendStatus(404);
+      }
+    } catch (error) {
+      if (error.name === "SequelizeValidationError") {
+        const errors = error.errors.map((err) => err.message);
+        res.status(400).json({ errors });
+      } else {
+        throw error;
+      }
     }
-}));  
+  })
+);
 
 module.exports = router;

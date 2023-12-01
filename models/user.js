@@ -2,7 +2,9 @@
 const { Model, DataTypes } = require("sequelize");
 const bcrypt = require("bcrypt");
 
+
 module.exports = (sequelize) => {
+ 
   class User extends Model {}
   User.init(
     {
@@ -69,7 +71,7 @@ module.exports = (sequelize) => {
         }
       },
     },
-    { sequelize }
+    { sequelize, timestamps: false, }
   );
 
   User.associate = (models) => {

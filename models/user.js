@@ -1,6 +1,6 @@
 "use strict";
 const { Model, DataTypes } = require("sequelize");
-//const bcrypt = require("bcrypt");
+const bcrypt = require("bcrypt");
 
 module.exports = (sequelize) => {
   class User extends Model {}
@@ -46,7 +46,8 @@ module.exports = (sequelize) => {
         },
       },
       password: {
-        type: DataTypes.STRING,
+        ////"virtual fields". These are attributes of a Model that only Sequelize populates but don't actually exist or get inserted as a column into the SQL database table.
+        type: DataTypes.VIRTUAL,
         allowNull: false,
         validate: {
           notNull: {
@@ -61,6 +62,25 @@ module.exports = (sequelize) => {
           },
         },
       },
+
+      confirmedPassword: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        //val represents the value being set for confirmedPassword.
+        set(val) {
+          if (val === this.password) {
+            //bycrypt lib hashes pw
+            const hashedPassword = bcrypt.hashSync(val, 10);
+            // //Set confirmedPassword val to hashed pw assigned to hashedPassword:
+            this.setDataValue("confirmedPassword", hashedPassword);
+          }
+        },
+        validate: {
+          notNull: {
+            msg: "Both passwords must match",
+          },
+        },
+      },
     },
     { sequelize }
   );
@@ -68,7 +88,7 @@ module.exports = (sequelize) => {
   User.associate = (models) => {
     User.hasMany(models.Course, {
       foreignKey: {
-        fieldName: "courseID",
+        fieldName: "userID",
         allowNull: false,
       },
     });

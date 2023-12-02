@@ -21,6 +21,7 @@ router.get(
       include: [
         {
           model: User,
+          as: 'user',
         },
       ],
     });
@@ -42,7 +43,7 @@ router.post(
         res.location(`/courses/${newCourse.id}`);
        //res.location(`/courses/${req.body.id}`);
         
-        res.status(201).json({ message: "Course successfully created!" });
+        res.status(201).json();
       }
     } catch (error) {
       console.log("ERROR: ", error.name);

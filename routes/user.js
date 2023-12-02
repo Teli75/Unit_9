@@ -39,7 +39,7 @@ router.post(
 
       await User.create(req.body);
 
-      res.status(201).json({ message: "Account successfully created!" });
+      res.status(201).json();
       return;
     } catch (error) {
       console.log("ERROR: ", error.name);

@@ -30,12 +30,13 @@ module.exports = (sequelize) => {
         type: DataTypes.STRING,
         //allowNull: false,
       },
-    },
-    { sequelize, timestamps: false, }
+    },{ sequelize }
+    //{ sequelize, timestamps: false, }
   );
 
   Course.associate = (models) => {
     Course.belongsTo(models.User, {
+      as: "user",
       foreignKey: {
         fieldName: "userId",
         //allowNull: false,

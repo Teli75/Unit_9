@@ -70,15 +70,15 @@ module.exports = (sequelize) => {
           },
         }
       },
-    },
-    { sequelize, timestamps: false, }
+    }, { sequelize }
+    //{ sequelize, timestamps: false, }
   );
 
   User.associate = (models) => {
     User.hasMany(models.Course, {
       foreignKey: {
         fieldName: "userId",
-        //allowNull: false,
+        //allowNull: false (not needed bc auth middleware ensure user is identified)
       },
     });
   };

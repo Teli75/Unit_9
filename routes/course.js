@@ -38,10 +38,10 @@ router.post(
       console.log("entered courses post route");
       console.log(req.body);
       if (req.body.title && req.body.description) {
-        //if (req.body.title && req.body.description && req.body.userId) {
-        await Course.create(req.body);
-        res.location(`/courses/${req.body.id}`);
-        //await Course.create(req.body);
+          let newCourse = await Course.create(req.body);
+        res.location(`/courses/${newCourse.id}`);
+       //res.location(`/courses/${req.body.id}`);
+        
         res.status(201).json({ message: "Course successfully created!" });
       }
     } catch (error) {
@@ -74,8 +74,8 @@ router.get(
     });
 
     if (course) {
-      res.json(course);
-      res.status(200).json({ message: "Course Detail" });
+      //res.json(course);
+      res.status(200).json({ course });
     } else {
       //This generates an error that is sent to middlwware
       next();

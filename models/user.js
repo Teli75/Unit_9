@@ -76,7 +76,7 @@ module.exports = (sequelize) => {
 
   User.associate = (models) => {
     User.hasMany(models.Course, {
-      as: "user",
+      
       foreignKey: {
         fieldName: "userId",
         //allowNull: false (not needed bc auth middleware ensure user is identified)

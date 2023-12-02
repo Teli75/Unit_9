@@ -20,8 +20,7 @@ router.get(
     let courses = await Course.findAll({
       include: [
         {
-          model: User,
-          as: 'user',
+          model: User
         },
       ],
     });
@@ -38,13 +37,12 @@ router.post(
     try {
       console.log("entered courses post route");
       console.log(req.body);
-      if (req.body.title && req.body.description) {
-          let newCourse = await Course.create(req.body);
-        res.location(`/courses/${newCourse.id}`);
-       //res.location(`/courses/${req.body.id}`);
-        
-        res.status(201).json();
-      }
+
+      let newCourse = await Course.create(req.body);
+      res.location(`/courses/${newCourse.id}`);
+      //res.location(`/courses/${req.body.id}`);
+
+      res.status(201).json();
     } catch (error) {
       console.log("ERROR: ", error.name);
       if (error.name === "SequelizeValidationError") {
